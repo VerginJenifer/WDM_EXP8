@@ -49,7 +49,19 @@ def get_amazon_products(search_query):
     products_data = []  # List to store product information
 
     if response.status_code == 200:
-        /* TYPE YOUR CODE HERE
+        soup = BeautifulSoup(response.text, 'html.parser')
+        # Find all divs containing product information
+        products = soup.find_all('div', {'data-component-type': 's-search-result'})
+
+        for product in products:
+            name = product.find('span', {'class': 'a-text-normal'}).text.strip()
+            price = product.find('span', {'class': 'a-offscreen'})
+            if price:
+                price = price.text.strip()
+            else:
+                price = 'Price not available'
+            products_data.append({'Product': name, 'Price': price})
+
 
     return sorted(products_data, key=lambda x: convert_price_to_float(x['Price']))
 
@@ -72,8 +84,11 @@ if products:  # Check if products list is not empty
 else:
     print('No products found.')
 
+
 ```
 
 ### Output:
+![328016077-6f88834f-65d2-4876-ac20-67f80216faa7](https://github.com/user-attachments/assets/5a8ef242-80e8-45b0-bdc1-353888038f8e)
 
 ### Result:
+Thus Web Scraping On e-commerce platform using BeautifulSoup is executed successfully.
